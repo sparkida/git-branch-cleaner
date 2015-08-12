@@ -17,7 +17,7 @@ var exec = require('child_process').exec,
 	},
 	procs = [],
 	done = 0,
-	delCmd = 'git branch -d %s && git push origin :%s',
+	delCmd = 'git branch -D %s > /dev/null &> /dev/null && git push origin :%s',
 	purge = function (name, date) {
 		exec(format(delCmd, name, name), function (err, stdout, stderr) {
 			if (err) {
