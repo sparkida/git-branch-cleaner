@@ -2,6 +2,7 @@ git-branch-cleaner
 ------------------
 Removes all branches from repo up to a selected point in time
 
+
 Safe Cleaning
 -------------
 
@@ -12,4 +13,6 @@ $ tar czf <repo>.tar.gz <repo>
 ```
 
 
-
+What if...
+----------
+"I deleted things accidentally" - hopefully you have a backup available

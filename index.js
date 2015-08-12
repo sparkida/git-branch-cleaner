@@ -20,10 +20,10 @@ var exec = require('child_process').exec,
 	delCmd = 'git branch -D %s > /dev/null &> /dev/null && git push origin :%s',
 	purge = function (name, date) {
 		exec(format(delCmd, name, name), function (err, stdout, stderr) {
+			done++;
 			if (err) {
 				console.log(err);
 			} else {
-				done++;
 				console.log(format('deleted: %s \t\t [%s]', name, date));
 			}
 			if (done === marked.length) {
@@ -48,7 +48,7 @@ var exec = require('child_process').exec,
 			size = refs.length;
 		for ( ; i < size; i++) {
 			cur = refs[i];
-			if (cur.name === 'master' || cur.date > targetTime) {
+			if (cur.name === 'master' || cur.name === 'HEAD' || cur.date > targetTime) {
 				continue;
 			}
 			marked.push(cur.name + '::' + new Date(cur.date).toDateString());
