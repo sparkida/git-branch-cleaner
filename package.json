@@ -1,0 +1,31 @@
+{
+    "name": "git-branch-cleaner",
+    "version": "1.0.0",
+    "preferGlobal": true,
+    "description": "Git housekeeping utility; deletes remote and local git branches from a time period",
+    "main": "./index.js",
+    "directories": {
+    },
+    "scripts": {
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/git-branch-cleaner.git"
+    },
+    "keywords": [
+		"git",
+		"branch cleaner"
+	],
+    "devDependencies": {
+    },
+    "dependencies": {
+    },
+    "engine": {
+        "node": ">=0.10.x"
+    },
+    "author": {
+        "name": "Nick Riley",
+        "email": "nick@sparkida.com",
+        "url": "http://sparkida.com"
+    }
+}
