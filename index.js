@@ -16,38 +16,29 @@ var exec = require('child_process').exec,
 		this.date = new Date(date).getTime();
 	},
 	procs = [],
-	done = 0,
-	delCmd = 'git branch -D %s > /dev/null &> /dev/null && git push origin :%s',
+	index = 0,
+	delCmd = 'git branch -D %s > /dev/null &> /dev/null && git branch -rD origin/%s > /dev/null &> /dev/null && git push origin :%s',
 	purge = function (name, date) {
 		exec(format(delCmd, name, name), function (err, stdout, stderr) {
-			done++;
-			if (err) {
-				console.log(err);
-			} else {
-				console.log(format('deleted: %s \t\t [%s]', name, date));
-			}
-			if (done === marked.length) {
+			index++;
+			if (index === marked.length) {
 				rl.close();
 				console.log('exiting');
+			} else {
+				if (err) {
+					console.log('no remote branch: "' + name + '"');
+					deleteBranch();
+				} else {
+					console.log(format('deleted: %s \t\t [%s]', name, date));
+					setTimeout(deleteBranch, 2000);
+				}
 			}
 		});
 	},
-	index = 0,
-	deleteBranches = function () {
-		var cur,
-			size = marked.length;
-		for ( ; index < size; index++) {
-			cur = marked[index].split('::');
-			purge(cur[0], cur[1]);
-			if (index > 0 && index%29 === 0) {
-				break;
-			}
-		}
-		if (index < size) {
-			console.log('git max 30 push per 1 minute, will continue deleting in 60 seconds');
-			marked.splice(0, index + 1);
-			setTimeout(deleteBranches, 1000 * 60);
-		}
+	deleteBranch = function () {
+		console.log('deleting ' + (index + 1) + ' of ' + marked.length);
+		var cur = marked[index].split('::');
+		purge(cur[0], cur[1]);
 	},
 	/** filter for targetDate */
 	filterBranches = function () {
@@ -64,7 +55,7 @@ var exec = require('child_process').exec,
 		console.log(marked);
 		rl.question('delete? [y/n] > ', function (answer) {
 			if (answer === 'y') {
-				deleteBranches();
+				deleteBranch();
 			} else {
 				process.exit();
 			}
