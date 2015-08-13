@@ -32,13 +32,21 @@ var exec = require('child_process').exec,
 			}
 		});
 	},
+	index = 0,
 	deleteBranches = function () {
-		var i = 0,
-			cur,
+		var cur,
 			size = marked.length;
-		for ( ; i < size; i++) {
-			cur = marked[i].split('::');
+		for ( ; index < size; index++) {
+			cur = marked[index].split('::');
 			purge(cur[0], cur[1]);
+			if (index > 0 && index%29 === 0) {
+				break;
+			}
+		}
+		if (index < size) {
+			console.log('git max 30 push per 1 minute, will continue deleting in 60 seconds');
+			marked.splice(0, index + 1);
+			setTimeout(deleteBranches, 1000 * 60);
 		}
 	},
 	/** filter for targetDate */
