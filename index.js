@@ -15,11 +15,10 @@ var exec = require('child_process').exec,
 		this.name = name;
 		this.date = new Date(date).getTime();
 	},
-	procs = [],
 	index = 0,
 	delCmd = 'git branch -D %s > /dev/null &> /dev/null && git branch -rD origin/%s > /dev/null &> /dev/null && git push origin :%s',
 	purge = function (name, date) {
-		exec(format(delCmd, name, name), function (err, stdout, stderr) {
+		exec(format(delCmd, name, name, name), function (err, stdout, stderr) {
 			index++;
 			if (index === marked.length) {
 				rl.close();
